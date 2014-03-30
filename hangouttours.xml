@@ -151,7 +151,7 @@
         google.maps.event.addListener(panorama, 'pov_changed', function() {
           console.log(panorama);
           if (hangout) { 
-            gapi.hangout.data.submitDelta({'heading' : panorama.getPov().heading, 'pitch' : panorama.getPov().pitch });
+            gapi.hangout.data.submitDelta({'heading' : panorama.getPov().heading.toString(), 'pitch' : panorama.getPov().pitch.toString() });
           }
         });
       }
@@ -161,11 +161,11 @@
       }
 
       function changeHeading(heading) { 
-          panorama.setPov({heading: heading});
+          panorama.setPov({heading: parseInt(heading)});
       }
 
       function changePitch(pitch) { 
-          panorama.setPov({pitch: pitch});
+          panorama.setPov({pitch: parseInt(pitch)});
       }
 
       if (hangout) {
@@ -187,6 +187,7 @@
 
     </script> 
   </body>
+</html>
     ]]>
   </Content>
 </Module>
