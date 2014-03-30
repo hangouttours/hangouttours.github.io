@@ -112,7 +112,7 @@
         });
         // add listener to change panorama options when the marker is clicked
         google.maps.event.addListener(markerLexington, 'click', function() {
-          if (hangout) { gapi.hangout.data.submitDelta({'mapPos' : positionLexington}); }
+          if (hangout) { gapi.hangout.data.submitDelta({'mapPos' : positionLexington.toString()}); }
           panorama.setPosition(positionLexington);
           panorama.setPov({heading: 140, pitch: +10, zoom: 1});
         });
@@ -132,7 +132,7 @@
         });
         // add listener to change panorama options when the marker is clicked
         google.maps.event.addListener(markerWalters, 'click', function() {
-          if (hangout) { gapi.hangout.data.submitDelta({'mapPos' : positionWalters}); }
+          if (hangout) { gapi.hangout.data.submitDelta({'mapPos' : positionWalters.toString()}); }
           panorama.setPosition(positionWalters);
           panorama.setPov({heading: 230, pitch: +10, zoom: 1});
         });
@@ -145,7 +145,7 @@
 
         google.maps.event.addListener(panorama, 'position_changed', function() {
           console.log(panorama)
-          if (hangout) { gapi.hangout.data.submitDelta({ 'mapPos' : positionWalters }); }
+          if (hangout) { gapi.hangout.data.submitDelta({ 'mapPos' : positionWalters.toString() }); }
         });
 
         google.maps.event.addListener(panorama, 'pov_changed', function() {
@@ -160,12 +160,9 @@
           panorama.setPosition(position);
       }
 
-      function changeHeading(heading) { 
-          panorama.setPov({heading: parseInt(heading)});
-      }
-
-      function changePitch(pitch) { 
-          panorama.setPov({pitch: parseInt(pitch)});
+      function changePov(heading, pitch) { 
+        console.log("heading: " +  heading, + " pitch: " + pitch);
+        panorama.setPov({heading: parseFloat(heading), pitch: parseFloat(pitch)});
       }
 
       if (hangout) {
@@ -176,12 +173,8 @@
             changePosition(gapi.hangout.data.getValue("mapPos"));
             gapi.hangout.data.clearValue("mapPos");
           } else if (gapi.hangout.data.getValue("heading") !== undefined) {
-            changeHeading(gapi.hangout.data.getValue("heading"));
-            gapi.hangout.data.clearValue("heading");
-          } else if (gapi.hangout.data.getValue("pitch") !== undefined) {
-            changePitch(gapi.hangout.data.getValue("pitch"));
-            gapi.hangout.data.clearValue("pitch");
-          }
+            changePov(gapi.hangout.data.getValue("heading"), gapi.hangout.data.getValue("pitch"));
+          } 
         });
       }
 
