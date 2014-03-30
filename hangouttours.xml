@@ -175,12 +175,11 @@
       if (hangout) {
         gapi.hangout.data.onStateChanged.add(function(event) {
           console.log('state has changed!');
-          console.log(event);
-          if (gapi.hangout.data.getValue("posLat") !== undefined) {
+          if (gapi.hangout.data.getValue("posLat") !== undefined && gapi.hangout.data.getValue("posLong") !== undefined) {
             changePosition(gapi.hangout.data.getValue("posLat"), gapi.hangout.data.getValue("posLong"));
             gapi.hangout.data.clearValue("posLat");
             gapi.hangout.data.clearValue("posLong");
-          } else if (gapi.hangout.data.getValue("heading") !== undefined) {
+          } else if (gapi.hangout.data.getValue("heading") !== undefined && gapi.hangout.data.getValue("pitch") !== undefined) {
             changePov(gapi.hangout.data.getValue("heading"), gapi.hangout.data.getValue("pitch"));
             gapi.hangout.data.clearValue("heading");
             gapi.hangout.data.clearValue("pitch");
