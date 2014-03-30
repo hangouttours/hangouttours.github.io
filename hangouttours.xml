@@ -190,8 +190,8 @@
         gapi.hangout.onApiReady.add(
           function(eventObj) {
             if (eventObj.isApiReady) {
-              console.log(gapi.hangoutgetLocalParticipant());
-              console.log(gapi.hangoutgetLocalParticipantId());
+              console.log(gapi.hangout.getLocalParticipant());
+              console.log(gapi.hangout.getLocalParticipantId());
               // gapi.hangout.data.onStateChanged.add(function(event) {
               //   if (gapi.hangout.data.getValue("posLat") !== undefined && gapi.hangout.data.getValue("posLong") !== undefined) {
               //     changePosition(gapi.hangout.data.getValue("posLat"), gapi.hangout.data.getValue("posLong"));
