@@ -81,11 +81,12 @@
           }
         } else {
            panoramaOptions = {
+            draggable: false,
             addressControl: true,
             addressControlOptions: {
               style: {backgroundColor: 'grey', color: 'yellow'}
             },
-            linkControl: false,
+            linksControl: false,
             panControl: false,
             zoomControl: false,
             position: mapCenter,
@@ -190,7 +191,7 @@
 
       function changePov(heading, pitch) { 
         console.log("heading: " +  heading + " pitch: " + pitch);
-        panorama.setPov({heading: heading, pitch: pitch});
+        panorama.setPov({heading: parseFloat(heading), pitch: parseFloat(pitch)});
       }
 
       function init() {
