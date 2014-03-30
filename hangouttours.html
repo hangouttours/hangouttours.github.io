@@ -30,7 +30,7 @@
       var panorama;
       var panoramaOptions;
       var hangout = false;
-      var updatePos = true, updatePov = true;
+      var updatePov = true, updatePos = true;
     
       // the function called when the page loads; it shows the map and street view
       function initialize() {
@@ -129,49 +129,57 @@
          });
 
         google.maps.event.addListener(panorama, 'position_changed', function() {
-          console.log(panorama.getPosition().k.toString() + ", " + panorama.getPosition().A.toString());
-          if (hangout && updatePos) { 
-            updatePos = false;
+          console.log("position changed: " + panorama.getPosition().k.toString() + ", " + panorama.getPosition().A.toString());
+          updatePos = false;
+          changePosition(panorama.getPosition().k, panorama.getPosition().A);
+          if (hangout) { 
             gapi.hangout.data.submitDelta({'posLat' : panorama.getPosition().k.toString(), 'posLong' : panorama.getPosition().A.toString() });
           }
         });
 
         google.maps.event.addListener(panorama, 'pov_changed', function() {
-          console.log(panorama.getPosition().k.toString() + ", " + panorama.getPosition().A.toString());
-          if (hangout && updatePov) { 
-            updatePov = false;
+          console.log("pov changed: " + panorama.getPov().heading.toString() + ", " + panorama.getPov().pitch.toString());
+          updatePov = false;
+          changePov(panorama.getPov().heading, panorama.getPov().pitch);
+          currPov = panorama.getPov();
+
+          if (hangout) { 
             gapi.hangout.data.submitDelta({'heading' : panorama.getPov().heading.toString(), 'pitch' : panorama.getPov().pitch.toString() });
           }
         });
+
+        console.log(getLocalParticipant());
+        console.log(getLocalParticipantId());
       }
 
-      function changePosition(posLat, posLong) { 
-        console.log(posLat + ", " + posLong);
-        var pos = new google.maps.LatLng(posLat, posLong);
-        panorama.setPosition(pos);
-        updatePos = true;
-      }
+      // function changePosition(posLat, posLong) {
+      //   if (updatePos) { 
+      //     console.log("latlong: " + posLat + ", " + posLong);
+      //     var pos = new google.maps.LatLng(posLat, posLong);
+      //     panorama.setPosition(pos);
+      //   }
+      // }
 
-      function changePov(heading, pitch) { 
-        console.log("heading: " +  heading, + " pitch: " + pitch);
-        panorama.setPov({heading: heading, pitch: pitch});
-        updatePov = true;
-      }
+      // function changePov(heading, pitch) { 
+      //   if (updatePov) { 
+      //     console.log("heading: " +  heading + " pitch: " + pitch);
+      //     panorama.setPov({heading: heading, pitch: pitch});
+      //   }
+      // }
 
-      if (hangout) {
-        gapi.hangout.data.onStateChanged.add(function(event) {
-          console.log('state has changed!');
-          if (gapi.hangout.data.getValue("posLat") !== undefined && gapi.hangout.data.getValue("posLong") !== undefined) {
-            changePosition(gapi.hangout.data.getValue("posLat"), gapi.hangout.data.getValue("posLong"));
-            gapi.hangout.data.clearValue("posLat");
-            gapi.hangout.data.clearValue("posLong");
-          } else if (gapi.hangout.data.getValue("heading") !== undefined && gapi.hangout.data.getValue("pitch") !== undefined) {
-            changePov(gapi.hangout.data.getValue("heading"), gapi.hangout.data.getValue("pitch"));
-            gapi.hangout.data.clearValue("heading");
-            gapi.hangout.data.clearValue("pitch");
-          } 
-        });
-      }
+      // if (hangout) {
+      //   gapi.hangout.data.onStateChanged.add(function(event) {
+      //     if (gapi.hangout.data.getValue("posLat") !== undefined && gapi.hangout.data.getValue("posLong") !== undefined) {
+      //       changePosition(gapi.hangout.data.getValue("posLat"), gapi.hangout.data.getValue("posLong"));
+      //       gapi.hangout.data.clearValue("posLat");
+      //       gapi.hangout.data.clearValue("posLong");
+      //     } else if (gapi.hangout.data.getValue("heading") !== undefined && gapi.hangout.data.getValue("pitch") !== undefined) {
+      //       changePov(gapi.hangout.data.getValue("heading"), gapi.hangout.data.getValue("pitch"));
+      //       gapi.hangout.data.clearValue("heading");
+      //       gapi.hangout.data.clearValue("pitch");
+      //     } 
+      //   });
+      // }
 
     </script> 
   </body>
