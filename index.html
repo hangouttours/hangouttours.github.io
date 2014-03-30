@@ -49,7 +49,7 @@
                   <dd>
                     <a href="#panel1a">Maryland</a>
                     <div id="panel1a" class="content">
-                      <p>Baltimore</p>
+                      <a onClick="openBaltimore()">Baltimore</a>
                     </div>
                   </dd>
                 </dl>
@@ -128,6 +128,37 @@
                 <h5>Today’s Hangout Tour: Teach for America</h5>
                 <p>
                   In 2007, community leaders in Jacksonville sought out Teach For America as a vital part of the solution to improve educational prospects for students in Duval County.  Since Teach For America – Jacksonville launched with 50 corps members in 2008, we have brought over 200 high quality teachers to Jacksonville who have directly impacted the lives of over 13,000 low-income and minority students across Duval County. Because of successes like this we are building towards a scale that will allow us to effect transformational change across the entire city.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div id="baltimore" class="blurb">
+            <div class="row blurb-title">
+              <div class="large-3 columns blurb-img">
+                <img src="http://www.baltimorenewsjournal.com/wp-content/uploads/2013/01/National-Aquarium.jpg">
+              </div>
+
+              <div class="large-7 columns">
+                <h2>Baltimore, MD</h2>
+                <h3 class="subheader">"The Charm City"</h3>
+              </div>
+
+              <div class="large-2 columns">
+                <div class="g-hangout" data-render="createhangout"
+                    data-initial_apps="[{ app_id : '674318545016' }]">
+                </div>
+              </div>
+                
+            </div>
+
+            <div class="row">
+              <div class="large-12 columns">
+                <p>Baltimore is the gem of the Mid-Atlantic region, boasting 300 years of history, home to some of the world’s most famous authors, plus a vibrant culture bringing the best in sports, music, and cuisine.
+                </p>
+                  
+                <h5>Today’s Hangout Tour: Teach for America</h5>
+                <p>
+                  Based on the most recent Maryland School Assessment (MSA) data, only 62% of Baltimore City eighth graders are proficient in reading and just 38% are proficient in math compared to 91% and 82%, respectively, in Howard County.Teach For America’s deep investment in Baltimore has shown that great leaders in classrooms, schools, and systems have the potential to significantly shift academic trajectories and life opportunities for Baltimore’s young people. We are heartened by the recent progress in schools—enrollment, graduation rates, and standardized test scores have all improved over the past five years.
                 </p>
               </div>
             </div>
@@ -294,6 +325,11 @@
         $('#front').hide();
         $('.blurb').hide();
         $('#nashville').fadeIn();
+      }
+      function openBaltimore() {
+        $('#front').hide();
+        $('.blurb').hide();
+        $('#baltimore').fadeIn();
       }
     </script>
   </body>
