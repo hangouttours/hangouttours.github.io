@@ -332,7 +332,7 @@
               if (gapi.hangout.getLocalParticipant().person.displayName == gapi.hangout.getParticipants()[0].person.displayName) {
                 leader = true;
               }
-              if (leader) {
+              if (!leader) {
                 gapi.hangout.data.onStateChanged.add(function(event) {
                   changePosition(gapi.hangout.data.getValue("posLat"), gapi.hangout.data.getValue("posLong"));
                   changePov(gapi.hangout.data.getValue("heading"), gapi.hangout.data.getValue("pitch"));
