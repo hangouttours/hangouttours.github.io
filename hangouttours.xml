@@ -151,7 +151,7 @@
         google.maps.event.addListener(panorama, 'position_changed', function() {
           console.log("position changed: " + panorama.getPosition().k.toString() + ", " + panorama.getPosition().A.toString());
           updatePos = false;
-          changePosition(panorama.getPosition().k, panorama.getPosition().A);
+          <!-- changePosition(panorama.getPosition().k, panorama.getPosition().A); -->
           if (hangout) { 
             gapi.hangout.data.submitDelta({'posLat' : panorama.getPosition().k.toString(), 'posLong' : panorama.getPosition().A.toString() });
           }
@@ -160,7 +160,7 @@
         google.maps.event.addListener(panorama, 'pov_changed', function() {
           console.log("pov changed: " + panorama.getPov().heading.toString() + ", " + panorama.getPov().pitch.toString());
           updatePov = false;
-          changePov(panorama.getPov().heading, panorama.getPov().pitch);
+          <!-- changePov(panorama.getPov().heading, panorama.getPov().pitch); -->
           currPov = panorama.getPov();
 
           if (hangout) { 
@@ -168,8 +168,8 @@
           }
         });
 
-        console.log(gapi.hangoutgetLocalParticipant());
-        console.log(gapi.hangoutgetLocalParticipantId());
+        console.log(gapi.hangout.getLocalParticipant());
+        console.log(gapi.hangout.getLocalParticipantId());
       }
 
       // function changePosition(posLat, posLong) {
