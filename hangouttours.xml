@@ -94,6 +94,7 @@
               pitch: +10,
               zoom: 1
             }
+          }
         }
         // show the panorama in the map_canvas2 div element with the options that were set
         panorama = new  google.maps.StreetViewPanorama(document.getElementById("map_canvas2"), panoramaOptions);
