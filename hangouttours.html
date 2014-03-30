@@ -11,26 +11,28 @@
     <link rel="stylesheet" href="//hangouttours.github.io/css/app.css" />
     <style type="text/css">
       html, body { background: #181818 }
-      body { color: #efefef; font-size: 14pt; font-family: "Lato", "Helvetica Neue", "Helvetica", sans-serif; width: 95%; margin: 10px auto; }
+      body #main { color: #efefef; font-size: 14pt; font-family: "Lato", "Helvetica Neue", "Helvetica", sans-serif; width: 95%; margin: 10px auto; }
       #main { overflow: auto; }
+      a, a:visited { text-decoration: none; color: #f39c12; font-weight: bold; }
+      h1 { color: #e74c3c; font-family: "Lato", "Helvetica Neue", "Helvetica", sans-serif; font-weight: 500;}
+      footer { color: #efefef; font-family: "Lato", "Helvetica Neue", "Helvetica", sans-serif; width: 95%; margin: 10px auto; }
     </style>
   </head>
-  <body onload="initialize()">
+  <body>
     <div id="main">
-      <h1>Hangout Tours</h1>
+      <h1>Hangout Tours: Baltimore City</h1>
       <div id="map_canvas1" style="width: 650px; height: 400px; float: left;"></div> 
       <div id="space" style="width=10px; height: 400px; float: left;">&nbsp;</div> 
       <div id="map_canvas2" style="width: 650px; height: 400px; float: left;"></div>
     </div>
     <br>
-    <footer>-----<br>Hacked by <a href="//twitter.com/whatmariel">@whatmariel</a> and <a href="//twitter.com/tylerbabich">@tylerbabich</a> at HackDuke</footer>
+    <footer>-----<br>Hacked by <a href="//twitter.com/whatmariel" target="_blank">@whatmariel</a> and <a href="//twitter.com/tylerbabich" target="_blank">@tylerbabich</a> at HackDuke</footer>
 
     <script type="text/javascript">
       var map;
       var panorama;
       var panoramaOptions;
       var hangout = false;
-      var updatePov = true, updatePos = true;
     
       // the function called when the page loads; it shows the map and street view
       function initialize() {
@@ -47,18 +49,37 @@
         map = new google.maps.Map(document.getElementById("map_canvas1"), mapOptions);
         
         // options for the panorama
-        panoramaOptions = {
-          addressControl: true,
-          addressControlOptions: {
-            style: {backgroundColor: 'grey', color: 'yellow'}
-          },
-          position: mapCenter,
-          pov: {
-            heading: 140,
-            pitch: +10,
-            zoom: 1
+        if (hangout && gapi.hangout.getLocalParticipant().person.displayName != "Mariel Bartolome") {
+          panoramaOptions = {
+            draggable: false,
+            addressControl: true,
+            addressControlOptions: {
+              style: {backgroundColor: 'grey', color: 'yellow'}
+            },
+            linksControl: false,
+            panControl: false,
+            zoomControl: false,
+            position: mapCenter,
+            pov: {
+              heading: -177,
+              pitch: -0.3,
+              zoom: 1
+            }
           }
-        };
+        } else {
+          panoramaOptions = {
+            addressControl: true,
+            addressControlOptions: {
+              style: {backgroundColor: 'grey', color: 'yellow'}
+            },
+            position: mapCenter,
+            pov: {
+              heading: -177,
+              pitch: -0.3,
+              zoom: 1
+            }
+          }
+        }
         // show the panorama in the map_canvas2 div element with the options that were set
         panorama = new  google.maps.StreetViewPanorama(document.getElementById("map_canvas2"), panoramaOptions);
         // set street view for map
@@ -72,10 +93,10 @@
           title: "National Aquarium"
         });
         google.maps.event.addListener(marker, 'click', function() {
-          if (hangout) { gapi.hangout.data.submitDelta({'posLat' : marker.getPosition().k.toString(), 'posLong' : marker.getPosition().A.toString() });
+          if (hangout) { gapi.hangout.data.submitDelta({'posLat' : mapCenter.k.toString(), 'posLong' : mapCenter.A.toString() });
           }
-          panorama.setPosition(marker.position);
-          panorama.setPov({heading: 140, pitch: +10, zoom: 1});
+          panorama.setPosition(mapCenter);
+          panorama.setPov({heading: -177, pitch: -0.3, zoom: 1});
         });
           // on panorama
         var markerPanorama = new google.maps.Marker({
@@ -86,100 +107,223 @@
 
         // add notre dame marker
           // on map
-        var positionLexington = new google.maps.LatLng(39.291499,-76.621061);
-        var markerLexington = new google.maps.Marker({
-          position: positionLexington, 
+        var positionVaccaros = new google.maps.LatLng(39.286733,-76.602687);
+        var markerVaccaros = new google.maps.Marker({
+          position: positionVaccaros, 
           map: map, 
-          title: "Lexington Market"
+          title: "Vaccaros Market"
         });
         // add listener to change panorama options when the marker is clicked
-        google.maps.event.addListener(markerLexington, 'click', function() {
-          if (hangout) { gapi.hangout.data.submitDelta({'posLat' : positionLexington.getPosition().k.toString(), 'posLong' : positionLexington.getPosition().A.toString() });
+        google.maps.event.addListener(markerVaccaros, 'click', function() {
+          if (hangout) { gapi.hangout.data.submitDelta({'posLat' : positionVaccaros.k.toString(), 'posLong' : positionVaccaros.A.toString() });
           }
-          panorama.setPosition(positionLexington);
-          panorama.setPov({heading: 140, pitch: +10, zoom: 1});
+          panorama.setPosition(positionVaccaros);
+          panorama.setPov({heading: -67, pitch: +7, zoom: 1});
         });
           // on panorama
-        var markerLexingtonPanorama = new google.maps.Marker({
-            position: positionLexington,
+        var markerVaccarosPanorama = new google.maps.Marker({
+            position: positionVaccaros,
             map: panorama,
-            title: "Lexington Market"
+            title: "Vaccaros"
          });
         
-        // add louvre marker
-        var positionWalters = new google.maps.LatLng(39.296316,-76.6167789);
-        var markerWalters = new google.maps.Marker({
-          position: positionWalters, 
+        var positionPower = new google.maps.LatLng(39.288614,-76.606889);
+        var markerPower = new google.maps.Marker({
+          position: positionPower, 
           map: map, 
-          title:"Walters Art Museum"
+          title:"Powerplant Live"
         });
         // add listener to change panorama options when the marker is clicked
-        google.maps.event.addListener(markerWalters, 'click', function() {
-          if (hangout) { gapi.hangout.data.submitDelta({'posLat' : positionWalters.getPosition().k.toString(), 'posLong' : positionWalters.getPosition().A.toString() });
+        google.maps.event.addListener(markerPower, 'click', function() {
+          if (hangout) { gapi.hangout.data.submitDelta({'posLat' : positionPower.k.toString(), 'posLong' : positionPower.A.toString() });
           }
-          console.log(markerWalters);
-          panorama.setPosition(positionWalters);
-          panorama.setPov({heading: 230, pitch: +10, zoom: 1});
+          panorama.setPosition(positionPower);
+          panorama.setPov({heading: 2, pitch: 3, zoom: 1});
         });
           // on panorama
-        var markerWaltersPanorama = new google.maps.Marker({
-            position: positionWalters,
+        var markerPowerPanorama = new google.maps.Marker({
+            position: positionPower,
             map: panorama,
-            title: 'Walters Art Museum'
+            title: 'Powerplant Live'
+         });
+
+        // add everbank marker
+        var positionEverbank = new google.maps.LatLng(30.323134,-81.639114);
+        var markerEverbank = new google.maps.Marker({
+          position: positionEverbank, 
+          map: map, 
+          title:"Everbank Stadium"
+        });
+        // add listener to change panorama options when the marker is clicked
+        google.maps.event.addListener(markerEverbank, 'click', function() {
+          if (hangout) { gapi.hangout.data.submitDelta({'posLat' : positionEverbank.k.toString(), 'posLong' : positionEverbank.A.toString() });
+          }
+          panorama.setPosition(positionEverbank);
+          panorama.setPov({heading: 2, pitch: 3, zoom: 1});
+        });
+          // on panorama
+        var markerEverbankPanorama = new google.maps.Marker({
+            position: positionEverbank,
+            map: panorama,
+            title: 'Everbank Stadium'
+         });
+
+        // add graceland marker
+        var positionGraceland = new google.maps.LatLng(35.045943,-90.023125);
+        var markerGraceland = new google.maps.Marker({
+          position: positionGraceland, 
+          map: map, 
+          title:"Graceland"
+        });
+        // add listener to change panorama options when the marker is clicked
+        google.maps.event.addListener(markerGraceland, 'click', function() {
+          if (hangout) { gapi.hangout.data.submitDelta({'posLat' : positionGraceland.k.toString(), 'posLong' : positionGraceland.A.toString() });
+          }
+          panorama.setPosition(positionGraceland);
+          panorama.setPov({heading: 90, pitch: 6, zoom: 1});
+        });
+          // on panorama
+        var markerGracelandPanorama = new google.maps.Marker({
+            position: positionGraceland,
+            map: panorama,
+            title: 'Graceland'
+         });
+
+        // add eiffel marker
+        var positionEiffel = new google.maps.LatLng(48.856006,2.298072);
+        var markerEiffel = new google.maps.Marker({
+          position: positionEiffel, 
+          map: map, 
+          title:"Eiffel Tower"
+        });
+        // add listener to change panorama options when the marker is clicked
+        google.maps.event.addListener(markerEiffel, 'click', function() {
+          if (hangout) { gapi.hangout.data.submitDelta({'posLat' : positionEiffel.k.toString(), 'posLong' : positionEiffel.A.toString() });
+          }
+          panorama.setPosition(positionEiffel);
+          panorama.setPov({heading: -36.5, pitch: 9.5, zoom: 1});
+        });
+          // on panorama
+        var markerEiffelPanorama = new google.maps.Marker({
+            position: positionEiffel,
+            map: panorama,
+            title: 'Eiffel Tower'
+         });
+
+        // add mayan marker
+        var positionMayan = new google.maps.LatLng(17.043301,-96.767669);
+        var markerMayan = new google.maps.Marker({
+          position: positionMayan, 
+          map: map, 
+          title:"Mayan Ruins"
+        });
+        // add listener to change panorama options when the marker is clicked
+        google.maps.event.addListener(markerMayan, 'click', function() {
+          if (hangout) { gapi.hangout.data.submitDelta({'posLat' : positionMayan.k.toString(), 'posLong' : positionMayan.A.toString() });
+          }
+          panorama.setPosition(positionMayan);
+          panorama.setPov({heading: -4, pitch: 1, zoom: 1});
+        });
+          // on panorama
+        var markerMayanPanorama = new google.maps.Marker({
+            position: positionMayan,
+            map: panorama,
+            title: 'Mayan Ruins'
+         });
+
+        // add mayan marker
+        var positionReef = new google.maps.LatLng(-23.303693,151.915009);
+        var markerReef = new google.maps.Marker({
+          position: positionReef, 
+          map: map, 
+          title:"Great Barrier Reef"
+        });
+        // add listener to change panorama options when the marker is clicked
+        google.maps.event.addListener(markerReef, 'click', function() {
+          if (hangout) { gapi.hangout.data.submitDelta({'posLat' : positionReef.k.toString(), 'posLong' : positionReef.A.toString() });
+          }
+          panorama.setPosition(positionReef);
+          panorama.setPov({heading: -11.5, pitch: 1, zoom: 1});
+        });
+          // on panorama
+        var markerReefPanorama = new google.maps.Marker({
+            position: positionReef,
+            map: panorama,
+            title: 'Great Barrier Reef'
+         }); 
+
+        // add cherry marker
+        var positionCherry = new google.maps.LatLng(40.605641,140.466352);
+        var markerCherry = new google.maps.Marker({
+          position: positionCherry, 
+          map: map, 
+          title:"Cherry Blossoms"
+        });
+        // add listener to change panorama options when the marker is clicked
+        google.maps.event.addListener(markerCherry, 'click', function() {
+          if (hangout) { gapi.hangout.data.submitDelta({'posLat' : positionCherry.k.toString(), 'posLong' : positionCherry.A.toString() });
+          }
+          panorama.setPosition(positionCherry);
+          panorama.setPov({heading: 157.2, pitch: -4.8, zoom: 1});
+        });
+          // on panorama
+        var markerCherryPanorama = new google.maps.Marker({
+            position: positionCherry,
+            map: panorama,
+            title: 'Cherry Blossoms'
          });
 
         google.maps.event.addListener(panorama, 'position_changed', function() {
           console.log("position changed: " + panorama.getPosition().k.toString() + ", " + panorama.getPosition().A.toString());
-          updatePos = false;
-          changePosition(panorama.getPosition().k, panorama.getPosition().A);
-          if (hangout) { 
+          // changePosition(panorama.getPosition().k, panorama.getPosition().A);
+          if (hangout && gapi.hangout.getLocalParticipant().person.displayName == "Mariel Bartolome") { 
             gapi.hangout.data.submitDelta({'posLat' : panorama.getPosition().k.toString(), 'posLong' : panorama.getPosition().A.toString() });
           }
         });
 
         google.maps.event.addListener(panorama, 'pov_changed', function() {
           console.log("pov changed: " + panorama.getPov().heading.toString() + ", " + panorama.getPov().pitch.toString());
-          updatePov = false;
-          changePov(panorama.getPov().heading, panorama.getPov().pitch);
-          currPov = panorama.getPov();
-
-          if (hangout) { 
+          // changePov(panorama.getPov().heading, panorama.getPov().pitch);
+          if (hangout && gapi.hangout.getLocalParticipant().person.displayName == "Mariel Bartolome") { 
             gapi.hangout.data.submitDelta({'heading' : panorama.getPov().heading.toString(), 'pitch' : panorama.getPov().pitch.toString() });
           }
         });
 
-        console.log(gapi.hangoutgetLocalParticipant());
-        console.log(gapi.hangoutgetLocalParticipantId());
       }
 
-      // function changePosition(posLat, posLong) {
-      //   if (updatePos) { 
-      //     console.log("latlong: " + posLat + ", " + posLong);
-      //     var pos = new google.maps.LatLng(posLat, posLong);
-      //     panorama.setPosition(pos);
-      //   }
-      // }
+      function changePosition(posLat, posLong) {
+        console.log("latlong: " + posLat + ", " + posLong);
+        var pos = new google.maps.LatLng(posLat, posLong);
+        panorama.setPosition(pos);
+      }
 
-      // function changePov(heading, pitch) { 
-      //   if (updatePov) { 
-      //     console.log("heading: " +  heading + " pitch: " + pitch);
-      //     panorama.setPov({heading: heading, pitch: pitch});
-      //   }
-      // }
+      function changePov(heading, pitch) { 
+        console.log("heading: " +  heading + " pitch: " + pitch);
+        panorama.setPov({heading: parseFloat(heading), pitch: parseFloat(pitch)});
+      }
 
-      // if (hangout) {
-      //   gapi.hangout.data.onStateChanged.add(function(event) {
-      //     if (gapi.hangout.data.getValue("posLat") !== undefined && gapi.hangout.data.getValue("posLong") !== undefined) {
-      //       changePosition(gapi.hangout.data.getValue("posLat"), gapi.hangout.data.getValue("posLong"));
-      //       gapi.hangout.data.clearValue("posLat");
-      //       gapi.hangout.data.clearValue("posLong");
-      //     } else if (gapi.hangout.data.getValue("heading") !== undefined && gapi.hangout.data.getValue("pitch") !== undefined) {
-      //       changePov(gapi.hangout.data.getValue("heading"), gapi.hangout.data.getValue("pitch"));
-      //       gapi.hangout.data.clearValue("heading");
-      //       gapi.hangout.data.clearValue("pitch");
-      //     } 
-      //   });
-      // }
+      function init() {
+        // When API is ready...                                                         
+        gapi.hangout.onApiReady.add(
+          function(eventObj) {
+            if (eventObj.isApiReady) {
+              initialize();
+              if (gapi.hangout.getLocalParticipant().person.displayName != "Mariel Bartolome") {
+                gapi.hangout.data.onStateChanged.add(function(event) {
+                  changePosition(gapi.hangout.data.getValue("posLat"), gapi.hangout.data.getValue("posLong"));
+                  changePov(gapi.hangout.data.getValue("heading"), gapi.hangout.data.getValue("pitch"));
+                });
+              }
+            }
+          }
+        );
+      }
+
+      if (hangout) {
+        gadgets.util.registerOnLoadHandler(init);
+      } else {
+        initialize();
+      }
 
     </script> 
   </body>
