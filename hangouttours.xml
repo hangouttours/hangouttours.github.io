@@ -35,7 +35,7 @@
       #main { overflow: auto; }
     </style>
   </head>
-  <body onload="initialize()">
+  <body>
     <div id="main">
       <h1>Hangout Tours</h1>
       <div id="map_canvas1" style="width: 650px; height: 400px; float: left;"></div> 
@@ -49,7 +49,7 @@
       var map;
       var panorama;
       var panoramaOptions;
-      var hangout = true;
+      var hangout = false;
     
       // the function called when the page loads; it shows the map and street view
       function initialize() {
@@ -200,6 +200,7 @@
         gapi.hangout.onApiReady.add(
           function(eventObj) {
             if (eventObj.isApiReady) {
+              initialize();
               if (gapi.hangout.getLocalParticipant().person.displayName != "Mariel Bartolome") {
                 gapi.hangout.data.onStateChanged.add(function(event) {
                   if (gapi.hangout.data.getValue("posLat") !== undefined && gapi.hangout.data.getValue("posLong") !== undefined) {
