@@ -50,7 +50,6 @@
       var panorama;
       var panoramaOptions;
       var hangout = true;
-      var updatePov = true, updatePos = true;
     
       // the function called when the page loads; it shows the map and street view
       function initialize() {
@@ -67,19 +66,21 @@
         map = new google.maps.Map(document.getElementById("map_canvas1"), mapOptions);
         
         // options for the panorama
-        if (hangout && gapi.hangout.getLocalParticipant().person.displayName == "Mariel Bartolome") { 
-          panoramaOptions = {
-            addressControl: true,
-            addressControlOptions: {
-              style: {backgroundColor: 'grey', color: 'yellow'}
-            },
-            position: mapCenter,
-            pov: {
-              heading: 140,
-              pitch: +10,
-              zoom: 1
+        if (hangout) {
+          if (gapi.hangout.getLocalParticipant().person.displayName == "Mariel Bartolome") {
+            panoramaOptions = {
+              addressControl: true,
+              addressControlOptions: {
+                style: {backgroundColor: 'grey', color: 'yellow'}
+              },
+              position: mapCenter,
+              pov: {
+                heading: 140,
+                pitch: +10,
+                zoom: 1
+              }
             }
-          };
+          }
         } else {
            panoramaOptions = {
             addressControl: true,
@@ -95,7 +96,7 @@
               pitch: +10,
               zoom: 1
             }
-          };
+          }
         }
         // show the panorama in the map_canvas2 div element with the options that were set
         panorama = new  google.maps.StreetViewPanorama(document.getElementById("map_canvas2"), panoramaOptions);
