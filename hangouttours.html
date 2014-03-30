@@ -147,7 +147,7 @@
 
       function changePov(heading, pitch) { 
         console.log("heading: " +  heading, + " pitch: " + pitch);
-        panorama.setPov({heading: parseFloat(heading), pitch: parseFloat(pitch)});
+        panorama.setPov({heading: heading, pitch: pitch});
       }
 
       if (hangout) {
@@ -156,8 +156,12 @@
           console.log(event);
           if (gapi.hangout.data.getValue("posLat") !== undefined) {
             changePosition(gapi.hangout.data.getValue("posLat"), gapi.hangout.data.getValue("posLong"));
+            gapi.hangout.data.clearValue("posLat");
+            gapi.hangout.data.clearValue("posLong");
           } else if (gapi.hangout.data.getValue("heading") !== undefined) {
             changePov(gapi.hangout.data.getValue("heading"), gapi.hangout.data.getValue("pitch"));
+            gapi.hangout.data.clearValue("heading");
+            gapi.hangout.data.clearValue("pitch");
           } 
         });
       }
