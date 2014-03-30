@@ -52,7 +52,7 @@
       var map;
       var panorama;
       var panoramaOptions;
-      var hangout = tru;
+      var hangout = true;
     
       // the function called when the page loads; it shows the map and street view
       function initialize() {
