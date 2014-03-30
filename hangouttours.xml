@@ -33,7 +33,7 @@
       #main { overflow: auto; }
     </style>
   </head>
-  <body>
+  <body onload="initialize()">
     <div id="main">
       <h1>Hangout Tours</h1>
       <div id="map_canvas1" style="width: 450px; height: 500px; float: left;"></div> 
@@ -138,14 +138,6 @@
          });
       }
 
-      function init() {
-        // When API is ready...
-        gapi.hangout.onApiReady.add(
-          initialize();
-        );
-      }
-      // Wait for gadget to load.                                                       
-      gadgets.util.registerOnLoadHandler(init);
     </script> 
   </body>
     ]]>
