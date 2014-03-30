@@ -29,6 +29,7 @@
       var map;
       var panorama;
       var panoramaOptions;
+      var hangout = false;
     
       // the function called when the page loads; it shows the map and street view
       function initialize() {
@@ -70,7 +71,8 @@
           title: "National Aquarium"
         });
         google.maps.event.addListener(marker, 'click', function() {
-          panorama.setPosition(mapCenter);
+          if (hangout) { gapi.hangout.data.submitDelta({'mapPos' : marker.position}); }
+          panorama.setPosition(marker.position);
           panorama.setPov({heading: 140, pitch: +10, zoom: 1});
         });
           // on panorama
@@ -90,6 +92,7 @@
         });
         // add listener to change panorama options when the marker is clicked
         google.maps.event.addListener(markerLexington, 'click', function() {
+          if (hangout) { gapi.hangout.data.submitDelta({'mapPos' : positionLexington}); }
           panorama.setPosition(positionLexington);
           panorama.setPov({heading: 140, pitch: +10, zoom: 1});
         });
@@ -109,6 +112,7 @@
         });
         // add listener to change panorama options when the marker is clicked
         google.maps.event.addListener(markerWalters, 'click', function() {
+          if (hangout) { gapi.hangout.data.submitDelta({'mapPos' : positionWalters}); }
           panorama.setPosition(positionWalters);
           panorama.setPov({heading: 230, pitch: +10, zoom: 1});
         });
@@ -118,6 +122,47 @@
             map: panorama,
             title: 'Walters Art Museum'
          });
+
+        google.maps.event.addListener(panorama, 'position_changed', function() {
+          console.log(panorama)
+          if (hangout) { gapi.hangout.data.submitDelta({ 'mapPos' : positionWalters }); }
+        });
+
+        google.maps.event.addListener(panorama, 'pov_changed', function() {
+          console.log(panorama);
+          if (hangout) { 
+            gapi.hangout.data.submitDelta({'heading' : panorama.getPov().heading, 'pitch' : panorama.getPov().pitch });
+          }
+        });
+      }
+
+      function changePosition(position) { 
+          panorama.setPosition(position);
+      }
+
+      function changeHeading(heading) { 
+          panorama.setPov({heading: heading});
+      }
+
+      function changePitch(pitch) { 
+          panorama.setPov({pitch: pitch});
+      }
+
+      if (hangout) {
+        gapi.hangout.data.onStateChanged.add(function(event) {
+          console.log('state has changed!');
+          console.log(event);
+          if (gapi.hangout.data.getValue("mapPos") !== undefined) {
+            changePosition(gapi.hangout.data.getValue("mapPos"));
+            gapi.hangout.data.clearValue("mapPos");
+          } else if (gapi.hangout.data.getValue("heading") !== undefined) {
+            changePov(gapi.hangout.data.getValue("heading"));
+            gapi.hangout.data.clearValue("heading");
+          } else if (gapi.hangout.data.getValue("pitch") !== undefined) {
+            changePov(gapi.hangout.data.getValue("pitch"));
+            gapi.hangout.data.clearValue("pitch");
+          }
+        });
       }
 
     </script> 
