@@ -67,18 +67,36 @@
         map = new google.maps.Map(document.getElementById("map_canvas1"), mapOptions);
         
         // options for the panorama
-        panoramaOptions = {
-          addressControl: true,
-          addressControlOptions: {
-            style: {backgroundColor: 'grey', color: 'yellow'}
-          },
-          position: mapCenter,
-          pov: {
-            heading: 140,
-            pitch: +10,
-            zoom: 1
-          }
-        };
+        if (hangout && gapi.hangout.getLocalParticipant().person.displayName == "Mariel Bartolome") { 
+          panoramaOptions = {
+            addressControl: true,
+            addressControlOptions: {
+              style: {backgroundColor: 'grey', color: 'yellow'}
+            },
+            position: mapCenter,
+            pov: {
+              heading: 140,
+              pitch: +10,
+              zoom: 1
+            }
+          };
+        } else {
+           panoramaOptions = {
+            addressControl: true,
+            addressControlOptions: {
+              style: {backgroundColor: 'grey', color: 'yellow'}
+            },
+            linkControl: false,
+            panControl: false,
+            zoomControl: false,
+            position: mapCenter,
+            pov: {
+              heading: 140,
+              pitch: +10,
+              zoom: 1
+            }
+          };
+        }
         // show the panorama in the map_canvas2 div element with the options that were set
         panorama = new  google.maps.StreetViewPanorama(document.getElementById("map_canvas2"), panoramaOptions);
         // set street view for map
@@ -137,7 +155,6 @@
         google.maps.event.addListener(markerWalters, 'click', function() {
           if (hangout) { gapi.hangout.data.submitDelta({'posLat' : positionWalters.getPosition().k.toString(), 'posLong' : positionWalters.getPosition().A.toString() });
           }
-          console.log(markerWalters);
           panorama.setPosition(positionWalters);
           panorama.setPov({heading: 230, pitch: +10, zoom: 1});
         });
@@ -150,59 +167,51 @@
 
         google.maps.event.addListener(panorama, 'position_changed', function() {
           console.log("position changed: " + panorama.getPosition().k.toString() + ", " + panorama.getPosition().A.toString());
-          updatePos = false;
           // changePosition(panorama.getPosition().k, panorama.getPosition().A);
-          if (hangout) { 
+          if (hangout && gapi.hangout.getLocalParticipant().person.displayName == "Mariel Bartolome") { 
             gapi.hangout.data.submitDelta({'posLat' : panorama.getPosition().k.toString(), 'posLong' : panorama.getPosition().A.toString() });
           }
         });
 
         google.maps.event.addListener(panorama, 'pov_changed', function() {
           console.log("pov changed: " + panorama.getPov().heading.toString() + ", " + panorama.getPov().pitch.toString());
-          updatePov = false;
           // changePov(panorama.getPov().heading, panorama.getPov().pitch);
-          currPov = panorama.getPov();
-
-          if (hangout) { 
+          if (hangout && gapi.hangout.getLocalParticipant().person.displayName == "Mariel Bartolome") { 
             gapi.hangout.data.submitDelta({'heading' : panorama.getPov().heading.toString(), 'pitch' : panorama.getPov().pitch.toString() });
           }
         });
 
       }
 
-      // function changePosition(posLat, posLong) {
-      //   if (updatePos) { 
-      //     console.log("latlong: " + posLat + ", " + posLong);
-      //     var pos = new google.maps.LatLng(posLat, posLong);
-      //     panorama.setPosition(pos);
-      //   }
-      // }
+      function changePosition(posLat, posLong) {
+        console.log("latlong: " + posLat + ", " + posLong);
+        var pos = new google.maps.LatLng(posLat, posLong);
+        panorama.setPosition(pos);
+      }
 
-      // function changePov(heading, pitch) { 
-      //   if (updatePov) { 
-      //     console.log("heading: " +  heading + " pitch: " + pitch);
-      //     panorama.setPov({heading: heading, pitch: pitch});
-      //   }
-      // }
+      function changePov(heading, pitch) { 
+        console.log("heading: " +  heading + " pitch: " + pitch);
+        panorama.setPov({heading: heading, pitch: pitch});
+      }
 
       function init() {
         // When API is ready...                                                         
         gapi.hangout.onApiReady.add(
           function(eventObj) {
             if (eventObj.isApiReady) {
-              console.log(gapi.hangout.getLocalParticipant());
-              console.log(gapi.hangout.getLocalParticipantId());
-              // gapi.hangout.data.onStateChanged.add(function(event) {
-              //   if (gapi.hangout.data.getValue("posLat") !== undefined && gapi.hangout.data.getValue("posLong") !== undefined) {
-              //     changePosition(gapi.hangout.data.getValue("posLat"), gapi.hangout.data.getValue("posLong"));
-              //     gapi.hangout.data.clearValue("posLat");
-              //     gapi.hangout.data.clearValue("posLong");
-              //   } else if (gapi.hangout.data.getValue("heading") !== undefined && gapi.hangout.data.getValue("pitch") !== undefined) {
-              //     changePov(gapi.hangout.data.getValue("heading"), gapi.hangout.data.getValue("pitch"));
-              //     gapi.hangout.data.clearValue("heading");
-              //     gapi.hangout.data.clearValue("pitch");
-              //   } 
-              // });
+              if (gapi.hangout.getLocalParticipant().person.displayName != "Mariel Bartolome") {
+                gapi.hangout.data.onStateChanged.add(function(event) {
+                  if (gapi.hangout.data.getValue("posLat") !== undefined && gapi.hangout.data.getValue("posLong") !== undefined) {
+                    changePosition(gapi.hangout.data.getValue("posLat"), gapi.hangout.data.getValue("posLong"));
+                    gapi.hangout.data.clearValue("posLat");
+                    gapi.hangout.data.clearValue("posLong");
+                  } else if (gapi.hangout.data.getValue("heading") !== undefined && gapi.hangout.data.getValue("pitch") !== undefined) {
+                    changePov(gapi.hangout.data.getValue("heading"), gapi.hangout.data.getValue("pitch"));
+                    gapi.hangout.data.clearValue("heading");
+                    gapi.hangout.data.clearValue("pitch");
+                  } 
+                });
+              }
             }
           }
         );
