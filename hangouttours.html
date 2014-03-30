@@ -30,6 +30,7 @@
       var panorama;
       var panoramaOptions;
       var hangout = false;
+      var updatePos = true, updatePov = true;
     
       // the function called when the page loads; it shows the map and street view
       function initialize() {
@@ -129,13 +130,16 @@
 
         google.maps.event.addListener(panorama, 'position_changed', function() {
           console.log(panorama.getPosition().k.toString() + ", " + panorama.getPosition().A.toString());
-          if (hangout) { gapi.hangout.data.submitDelta({'posLat' : panorama.getPosition().k.toString(), 'posLong' : panorama.getPosition().A.toString() });
+          if (hangout && updatePos) { 
+            updatePos = false;
+            gapi.hangout.data.submitDelta({'posLat' : panorama.getPosition().k.toString(), 'posLong' : panorama.getPosition().A.toString() });
           }
         });
 
         google.maps.event.addListener(panorama, 'pov_changed', function() {
           console.log(panorama.getPosition().k.toString() + ", " + panorama.getPosition().A.toString());
-          if (hangout) { 
+          if (hangout && updatePov) { 
+            updatePov = false;
             gapi.hangout.data.submitDelta({'heading' : panorama.getPov().heading.toString(), 'pitch' : panorama.getPov().pitch.toString() });
           }
         });
@@ -145,11 +149,13 @@
         console.log(posLat + ", " + posLong);
         var pos = new google.maps.LatLng(posLat, posLong);
         panorama.setPosition(pos);
+        updatePos = true;
       }
 
       function changePov(heading, pitch) { 
         console.log("heading: " +  heading, + " pitch: " + pitch);
         panorama.setPov({heading: heading, pitch: pitch});
+        updatePov = true;
       }
 
       if (hangout) {
