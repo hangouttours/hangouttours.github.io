@@ -110,9 +110,9 @@
           title: "National Aquarium"
         });
         google.maps.event.addListener(marker, 'click', function() {
-          if (hangout) { gapi.hangout.data.submitDelta({'posLat' : marker.k.toString(), 'posLong' : marker.A.toString() });
+          if (hangout) { gapi.hangout.data.submitDelta({'posLat' : mapCenter.k.toString(), 'posLong' : mapCenter.A.toString() });
           }
-          panorama.setPosition(marker.position);
+          panorama.setPosition(mapCenter);
           panorama.setPov({heading: 140, pitch: +10, zoom: 1});
         });
           // on panorama
