@@ -41,9 +41,9 @@
   <body>
     <div id="main">
       <h1>Hangout Tours: Baltimore City</h1>
-      <div id="map_canvas1" style="width: 650px; height: 400px; float: left;"></div> 
+      <div id="map_canvas1" style="width: 450px; height: 400px; float: left;"></div> 
       <div id="space" style="width=10px; height: 400px; float: left;">&nbsp;</div> 
-      <div id="map_canvas2" style="width: 650px; height: 400px; float: left;"></div>
+      <div id="map_canvas2" style="width: 450px; height: 400px; float: left;"></div>
     </div>
     <br>
     <footer>-----<br>Hacked by <a href="//twitter.com/whatmariel" target="_blank">@whatmariel</a> and <a href="//twitter.com/tylerbabich" target="_blank">@tylerbabich</a> at HackDuke</footer>
@@ -52,7 +52,7 @@
       var map;
       var panorama;
       var panoramaOptions;
-      var hangout = true;
+      var hangout = tru;
     
       // the function called when the page loads; it shows the map and street view
       function initialize() {
@@ -294,6 +294,8 @@
          });
 
         google.maps.event.addListener(panorama, 'position_changed', function() {
+              console.log(gapi.hangout.getParticipants());
+              console.log(gapi.hangout.getParticipants()[0]);
           console.log("position changed: " + panorama.getPosition().k.toString() + ", " + panorama.getPosition().A.toString());
           // changePosition(panorama.getPosition().k, panorama.getPosition().A);
           if (hangout && gapi.hangout.getLocalParticipant().person.displayName == "Mariel Bartolome") { 
