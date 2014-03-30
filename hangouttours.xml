@@ -110,7 +110,7 @@
           title: "National Aquarium"
         });
         google.maps.event.addListener(marker, 'click', function() {
-          if (hangout) { gapi.hangout.data.submitDelta({'posLat' : marker.getPosition().k.toString(), 'posLong' : marker.getPosition().A.toString() });
+          if (hangout) { gapi.hangout.data.submitDelta({'posLat' : marker.k.toString(), 'posLong' : marker.A.toString() });
           }
           panorama.setPosition(marker.position);
           panorama.setPov({heading: 140, pitch: +10, zoom: 1});
@@ -132,7 +132,7 @@
         });
         // add listener to change panorama options when the marker is clicked
         google.maps.event.addListener(markerLexington, 'click', function() {
-          if (hangout) { gapi.hangout.data.submitDelta({'posLat' : positionLexington.getPosition().k.toString(), 'posLong' : positionLexington.getPosition().A.toString() });
+          if (hangout) { gapi.hangout.data.submitDelta({'posLat' : positionLexington.k.toString(), 'posLong' : positionLexington.A.toString() });
           }
           panorama.setPosition(positionLexington);
           panorama.setPov({heading: 140, pitch: +10, zoom: 1});
@@ -153,7 +153,7 @@
         });
         // add listener to change panorama options when the marker is clicked
         google.maps.event.addListener(markerWalters, 'click', function() {
-          if (hangout) { gapi.hangout.data.submitDelta({'posLat' : positionWalters.getPosition().k.toString(), 'posLong' : positionWalters.getPosition().A.toString() });
+          if (hangout) { gapi.hangout.data.submitDelta({'posLat' : positionWalters.k.toString(), 'posLong' : positionWalters.A.toString() });
           }
           panorama.setPosition(positionWalters);
           panorama.setPov({heading: 230, pitch: +10, zoom: 1});
